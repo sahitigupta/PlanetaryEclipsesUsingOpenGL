@@ -11,7 +11,7 @@ void subDisplay(void);
 void subReshape(int, int);
 void lunarEclipse();
 void solarEclipse();
-void select(int);
+void rightClickMenu(int);
 
 GLuint main_window, sub_window;
 int l = 0, s = 0, sub_menu, e_flag = 1;
@@ -43,6 +43,7 @@ void mainDisplay(void)
 	drawString(GLUT_BITMAP_TIMES_ROMAN_24, 400.0, 600.0, "PLANETARY ECLIPSES");
 	drawString(GLUT_BITMAP_HELVETICA_18, 400.0, 300.0, "Press L/l key for Lunar Eclipse");
 	drawString(GLUT_BITMAP_HELVETICA_18, 400.0, 200.0, "Press S/s key for Solar Eclipse");
+	drawString(GLUT_BITMAP_HELVETICA_18, 440.0, 100.0, "Press E/e key for Exit");
 	glutSwapBuffers();
 }
 
@@ -70,11 +71,15 @@ void mainKeyboard(unsigned char key, int x, int y)
 		sub_window = glutCreateSubWindow(main_window, 0, 0, 1000, 680);
 		eclipse();
 	}
-	if (key == 'S' || key == 's')
+	else if (key == 'S' || key == 's')
 	{
 		s = 1;
 		sub_window = glutCreateSubWindow(main_window, 0, 0, 1000, 680);
 		eclipse();
+	}
+	else if (key == 'E' || key == 'e')
+	{
+		exit(0);
 	}
 }
 
@@ -82,7 +87,7 @@ void eclipse()
 {
 	glutDisplayFunc(subDisplay);
 	glutReshapeFunc(subReshape);
-	sub_menu = glutCreateMenu(select);
+	sub_menu = glutCreateMenu(rightClickMenu);
 	glutAddMenuEntry("Home", 1);
 	glutAddMenuEntry("Stop Eclipse", 2);
 	glutAddMenuEntry("Exit", 3);
@@ -122,7 +127,7 @@ void subReshape(int w, int h)
 	glLoadIdentity();
 }
 
-void select(int op)
+void rightClickMenu(int op)
 {
 	if (op == 1)
 	{
@@ -246,7 +251,8 @@ void solarEclipse()
 	//solar eclipse
 	glPushMatrix();
 	glColor3f(0.0, 0.0, 0.0);
-	if (e_flag == 1) {
+	if (e_flag == 1)
+	{
 		glTranslatef(1.0, 0.5, 0.0);
 		glRotatef(angle_ec, 1.0, 1.0, 0.0);
 		glTranslatef(2.0, 0.1, 0.0);
